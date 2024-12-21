@@ -49,6 +49,11 @@ func CheckError(err error) {
 	}
 }
 
+func PanicIfError(err error) {
+	if err != nil {
+		panic(err.Error())
+	}
+}
 
 func GetValue(key string) string {
 	fmt.Println(os.Getenv("GO_ENV"))

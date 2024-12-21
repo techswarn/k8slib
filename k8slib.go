@@ -1,16 +1,16 @@
-package main
+package k8slib
 
 import (
 	"log"
-	_ "time"
+	"time"
 	"github.com/techswarn/k8slib/utils"
 	"k8s.io/client-go/kubernetes"
 	// appv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
-	// metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	_ "github.com/Azure/go-autorest/autorest/to"
 	_ "errors"
-	_ "context"
+	"context"
 )
 
 type Deploy struct {
@@ -29,13 +29,13 @@ func Connect() *kubernetes.Clientset {
 }
 
 func (d *Deploy) CreateNamespace(ctx context.Context, clientSet *kubernetes.Clientset) *corev1.Namespace {
-	fmt.Printf("Creating namespace %q.\n\n", d.Name)
+	log.Printf("Creating namespace %q.\n\n", d.Name)
 	ns := &corev1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: d.Name,
 		},
 	}
 	ns, err := clientSet.CoreV1().Namespaces().Create(ctx, ns, metav1.CreateOptions{})
-	panicIfError(err)
+	utils.PanicIfError(err)
 	return ns
 }
